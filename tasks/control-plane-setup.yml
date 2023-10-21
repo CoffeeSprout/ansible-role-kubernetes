@@ -45,6 +45,31 @@
     state: link
     mode: 0644
 
+- name: Download Cilium binary
+  get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz"
+    dest: "/tmp/cilium-linux-amd64.tar.gz"
+  when: kubernetes_pod_network.cni == 'cilium'
+
+- name: Extract Cilium binary
+  unarchive:
+    src: "/tmp/cilium-linux-amd64.tar.gz"
+    dest: "/usr/local/bin"
+    remote_src: yes
+  when: kubernetes_pod_network.cni == 'cilium'
+
+- name: Make Cilium binary executable
+  file:
+    path: "/usr/local/bin/cilium"
+    mode: '0755'
+  when: kubernetes_pod_network.cni == 'cilium'
+
+- name: Run Cilium to set up networking
+  command:
+    cmd: "cilium install --wait"
+  when: kubernetes_pod_network.cni == 'cilium'
+  ignore_errors: True
+
 - name: Configure Flannel networking.
   command: "kubectl apply -f {{ kubernetes_flannel_manifest_file }}"
   register: flannel_result

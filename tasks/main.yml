@@ -26,7 +26,6 @@
 - name: Ensure kubelet is started and enabled at boot.
   service:
     name: kubelet
-    state: started
     enabled: true
 
 - name: Check if Kubernetes has already been initialized.
