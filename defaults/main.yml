@@ -9,8 +9,8 @@ kubernetes_packages:
   - name: kubernetes-cni
     state: present
 
-kubernetes_version: '1.28'
-kubernetes_version_rhel_package: '1.28.1'
+kubernetes_version: '1.29'
+kubernetes_version_rhel_package: '1.29.0'
 
 kubernetes_role: control_plane
 
